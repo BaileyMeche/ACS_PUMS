@@ -58,6 +58,14 @@ Key Functions in ACS_PUMS_2022.ipynb
 `tract_consolidation = compute_tract_level_consolidation(df)`
 `print(tract_consolidation)`
 
+## Resources
+* [Census PUMS Documentation](https://www.census.gov/programs-surveys/acs/microdata/documentation.html)
+* [Census Data API: Variables](https://api.census.gov/data/2022/acs/acs5/pums/variables.html)
+* [Census Data API: Variable Explanations](https://www2.census.gov/programs-surveys/acs/tech_docs/pums/variable_changes/ACS2022_PUMS_Variable_Changes_and_Explanations.pdf)
+* [Census API Examples](https://api.census.gov/data/2022/acs/acs5/pums/examples.html)
+* [Request a U.S. Census Data API Key](https://api.census.gov/data/key_signup.html)
+* [Census-ACS Repository](https://github.com/Census-ACS/census)
+
 ## Dependencies
 This project requires the following Python libraries:
 
