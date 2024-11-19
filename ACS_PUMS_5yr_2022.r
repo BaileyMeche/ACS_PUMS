@@ -1,5 +1,5 @@
-### DEPENDENCIES 
-install.packages("rlang")       
+# DEPENDENCIES
+install.packages("rlang")    
 install.packages("jsonlite")
 install.packages("httr")
 install.packages("ggplot2")
@@ -17,15 +17,16 @@ library(ggplot2)
 library(Matrix)
 library(tidyr)
 
-
-# API call 
+# API call to Census Data
 api_key <- ""  # Add API key here
 url_1 <- paste0("https://api.census.gov/data/2022/acs/acs5/pums?get=RACAIAN,RACASN,RACBLK,RACNH,RACPI,RACSOR,RACWHT,HISP,SCHL,PWGTP,PUMA20&for=state:04&key=", api_key)
 
+### API URL
 print(paste("Requesting data from:", url_1))
+
 response_1 <- GET(url_1)
 
-### DATA 
+### Check if response is successful
 if (status_code(response_1) == 200) {
   data_1 <- fromJSON(content(response_1, "text"))
   
@@ -67,23 +68,22 @@ if (status_code(response_1) == 200) {
 }
 
 ##BUILD CUSTOM VARIABLES 
+# Assuming full_data contains the original columns as described
 
-# race variable
+# Construct the race variable
 full_data <- full_data %>%
   mutate(
     race = case_when(
       RACWHT == 1 & RACAIAN == 0 & RACASN == 0 & RACBLK == 0 & 
         RACNH == 0 & RACPI == 0 & RACSOR == 0 & HISP == 01 ~ "WHITE",
-      
       RACBLK == 1 ~ "BLACK",
       RACASN == 1 ~ "ASIAN",
-      HISP > 1 ~ "HISPANIC",
-      
+      HISP != 01 ~ "HISPANIC",
       TRUE ~ "OTHER"  # Any other combination falls into "Other"
     )
   )
 
-# educ variable from SCHL "Educational attainment" variable 
+# Construct educ variable from SCHL "Educational attainment" variable 
 full_data <- full_data %>%
   mutate(
     educ = case_when(
@@ -234,7 +234,6 @@ ggplot(puma_consolidation, aes(x = factor(PUMA20), y = Consolidation)) +
   labs(title = "Consolidation Levels for Each Unique PUMA20", x = "PUMA20", y = "Consolidation Level") +
   theme_minimal()
 
+#state consolidation value
 overall_consolidation <- compute_overall_consolidation(test_df)
 print(overall_consolidation)
-
-
